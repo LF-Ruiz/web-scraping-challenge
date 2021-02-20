@@ -8,9 +8,9 @@ import pandas as pd
 import time
 import requests
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup as bs
 from splinter import Browser
-
 
 
 def scrape():
@@ -35,15 +35,11 @@ def scrape():
     # Visit the Mars Facts webpage(https://space-facts.com/mars/) to scrape the table containing facts about the planet.
     facts_url = "https://space-facts.com/mars/"
 
-    # Retrieve page with the requests module
-    response1 = requests.get(facts_url)
-
-    # Create BeautifulSoup object and parse
-    soup = bs(response1.text, "lxml")    # LXML Parser
+    
 
     # Read the website HTML and convert to a pandas datframe
-    mars_df = pd.read_html(facts_url)
-    mars_df = mars_df[0]
+    facts_table = pd.read_html(facts_url)
+    mars_df = facts_table[0]
     mars_df.columns = ['Characteristic', 'Fact']
     # Remove numerical index value
     mars_df.set_index('Characteristic', inplace=True)
@@ -116,8 +112,8 @@ def scrape():
     }
     return (summary_data)
 
-import pymongo
-from pymongo import MongoClient
+# import pymongo
+# from pymongo import MongoClient
 # Initialize PyMongo to work with MongoDBs
 conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
@@ -125,7 +121,7 @@ client = pymongo.MongoClient(conn)
 # Define database and collection
 mars_db = client.mars_db
 collection = mars_db.summary_data
-collection.insert_one(collection)
+#collection.insert_one(summary_data)
 
 mars_data = mars_db.summary_data.find()
 for data in mars_data:

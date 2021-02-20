@@ -36,13 +36,13 @@ def index():
 # def index():
 #     mars = db
 #     return render_template("index.html", mars=mars)
-
+@app.route("/scrape")
 def scrape_data():
     scraped_data = scrape_mars.scrape()
     mars_db = client.mars_db
     data = mars_db.summary_data
     data.delete_many({})
-    data.insert(scraped_data)
+    #data.insert(scraped_data)
     return redirect("/", code=302)
 
 
