@@ -1,11 +1,13 @@
 # Imports and dependencies
-from bs4 import BeautifulSoup
 import requests
 import os
 from splinter import Browser
 import pymongo
-from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
+from pymongo import MongoClient
+import time
+from webdriver_manager.chrome import ChromeDriverManager
+from bs4 import BeautifulSoup as bs
 
 # set url's
 #### url to mars mission news
@@ -28,7 +30,6 @@ results = {}
 def scrape():
     browser = init_browser()
 
-    
     #Launches Website mars.nasa news
     html_news = browser.visit(url_news)
     soup = BeautifulSoup(html_news, 'lxml')

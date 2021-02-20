@@ -2,89 +2,88 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Mission to Mars</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 </head>
+<br>
+<br>
 
 <body>
     <div class="container">
-
-        <div class="jumbotron text-center">
-            <h1>Mission To Mars</h1>
-            <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+        <!-- Add Jumbotron to Header -->
+        <div class="jumbotron text-center"
+            style="background-image: url('https://wallpapercave.com/wp/wp2461878.jpg'); background-position: center; background-size: cover;height: 250px;">
+            <h1 style="color:white">Mission to Mars</h1>
+            <!-- Add a button to activate scraping script -->
+            <p><a class="btn btn-danger btn-xs" href="/scrape" role="button">Scrape New Data</a></p>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="heading">Latest Mars News</h2>
-                        <b><h3 class="heading">{{mars.latest_news_date}}</h3></b>
-                        <b><h3 class="heading">{{mars.latest_news_title}}</h3></b>
-                            <h4>{{mars.latest_news_paragraph}}</h4>
+        <!-- Mars News -->
+        <style>
+            body {
+                background-color: #e3ccb5;
+            }
+        </style>
+
+        <div class="row" id="mars-news">
+            <div class="col-md-12">
+                <div class="media">
+                    <div class="media-body">
+                        <h2 class="text-center">Missives from the Red Planet</h2>
+                        <h3 class="text-center">{{data['News from the Red Planet']}}</h3>
+                        <p class="text-center">{{ data['News Summary']}}</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="row">
-                <div class ="col-md-12">
-                </div>
-                <div class="col-md-5">
-                    <h2 class="heading">Featured Mars Image</h2>
-                    <img src="{{mars.featured_image}}">
-                </div>
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-5" style="padding-top: 20px;">
-                    <span class="border">
-                        <b><h3>Current Weather On Mars</h3></b>
-                        <p>{{mars.mars_weather}}</p>
-                    </span>
-                <div/>
-                <div class="row" style="padding-left: 16px;">
-                    <h3 class="header" > Mars Facts</h3>
-                    <table>
-                        {{mars.mars_data|safe}}
+
+        <!-- NASA Image -->
+        <div class="row" id="mars-driving-image">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <h2>Out for a Sunday drive...</h2>
+                <img style="margin: right 50px;"
+                    src="https://mars.nasa.gov/layout/mars2020/images/PIA23764-RoverNamePlateonMars-web.jpg"
+                    class="img-responsive" alt="Responsive image" />
+            </div>
+
+            <!-- Mars Characteristics Table -->
+            <div class="table" id="mars-characteristics">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <h2 class="text-center">Mars Characteristics</h2>
+                    <table class="text-center" align="center" style="height:250px; background-color: #c0ac83">
+                        <tr>
+                            <td>
+                                {{ data['Characteristics'] | safe }}
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="heading">Mars Hemispheres</h2>
-            </div>
-            <div class="col-md-6">
-                {% for x in mars.hemisphere_urls[0] %}
-                    <h4>{{x.title}}</h4>
-                    <img src="{{x.img_url}}">
-                {% endfor %}
-
-                {% for x in mars.hemisphere_urls[1] %}
-                    <h4>{{x.title}}</h4> 
-                    <img src="{{x.img_url}}">
-                {% endfor %}
-            </div>
-            <div class="col-md-6">
-                {% for x in mars.hemisphere_urls[2] %}
-                    <h4>{{x.title}}</h4> 
-                    <img src="{{x.img_url}}">
-                {% endfor %}
-            
-                {% for x in mars.hemisphere_urls[3] %}
-                    <h4>{{x.title}}</h4>
-                    <img src="{{x.img_url}}">
-                {% endfor %}
-            </div>
+    <!-- Mars Hemispheres Images-->
+    <div class="row" id="mars-images">
+        <div class="page-header">
+            <h2 class="text-center">Mars Hemispheres</h2>
         </div>
+
+        {% for hemisphere in data['Images'] %}
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <img src="{{hemisphere.ImageURL | default('static/images/no_image', true)}}" alt="Responsive image"
+                    class="img-responsive">
+                <div class="caption">
+                    <h3>{{hemisphere.Title}}</h3>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
     </div>
-        
-
-
+    </>
 </body>
 
 </html>
