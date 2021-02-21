@@ -32,7 +32,7 @@
             <div class="col-md-12">
                 <div class="media">
                     <div class="media-body">
-                        <h2 class="text-center">News from out there</h2>
+                        <h2 class="text-center">Last news from the red planet</h2>
                         <h3 class="text-center"> {{mars.news_title}} </h3>
                         <p class="text-center"> {{mars.news_p}} </p>
                     </div>
@@ -43,7 +43,7 @@
         <!-- NASA Image -->
         <div class="row" id="mars-driving-image">
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <h2>Out for a Sunday drive</h2>
+                <h2>Images from Mars</h2>
                 <img style="margin: right 50px;"
                     src="https://mars.nasa.gov/layout/mars2020/images/PIA23764-RoverNamePlateonMars-web.jpg"
                     class="img-responsive" alt="Responsive image" />
@@ -52,8 +52,8 @@
             <!-- Mars Characteristics Table -->
             <div class="table" id="mars-characteristics">
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <h2 class="text-center">Mars Characteristics</h2>
-                    <table class="text-center" align="center" style="height:250px; background-color: #c0ac83">
+                    <h2 class="text-center">Mars Facts</h2>
+                    <table  class="text-center" align="center" style="height:300px; background-color: 5262f1#">
                         <tr>
                             <td>
                                 {{ mars.fact_table | safe }}
@@ -69,9 +69,19 @@
         <div class="page-header">
             <h2 class="text-center">Mars Hemispheres</h2>
         </div>
+    </div>
+    <!-- hemispheres -->
+    <div class="row">
+        {% for hemisphere in mars_images %}
+            <div class="col-md-6">
+                <div >
+                    <img style="width:100%" src="{{hemisphere.img_url}}">
+                    <h3> {{hemisphere.title}} </h3>
+                </div>
+            </div>
+        {% endfor %}
+    </div>    
 
-    </div>
-    </div>
 </body>
 
 </html>

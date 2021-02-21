@@ -6,6 +6,7 @@ from splinter import Browser
 import pymongo
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
+import time
 
 # set url's
 #### url to mars mission news
@@ -37,6 +38,7 @@ def scrape():
     browser = Browser('chrome', **executable_path, headless=False)
 
     browser.visit(url_news)
+    time.sleep(1)
     html = browser.html
     # Create BeautifulSoup object; parse with 'lxml'
     soup = bs(html, 'lxml')
@@ -44,6 +46,8 @@ def scrape():
     slide=soup.find("li",class_="slide")
     news_title = slide.h3.text
     news_p = slide.find('div', class_='rollover_description_inner').text.strip()
+
+    browser.quit()
 
     ### Mars Facts
 
@@ -66,41 +70,44 @@ def scrape():
 
 # * Visit the USGS Astrogeology 
 # * You will need to click each of the links to the hemispheres in order to find the image url to the full resolution image.
-
 # * Save both the image url string for the full resolution hemisphere image, and the Hemisphere title 
-
 # * Append the dictionary with the image url string and the hemisphere title to a list. 
 #   This list will contain one dictionary for each hemisphere.
-#     browser.visit('https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars')
 
-#     # create beautifulsoup object
-#     html = browser.html
-#     soup_hemispheres = bs(html, 'lxml')
-#     hemisphere_imgage_urls = []
+    # URL to be scraped
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 
-#     # Finding the hemispheres data through their HTML divisions
-#     # mars_hemispheres = soup_hemispheres.find('div', class_='collapsible results')
-#     # hemispheres = mars_hemispheres.find_all('div', class_='item')
-#     links = browser.find_by_css("a.product-item h3")
+    # visit the astrogeology website
+    browser.visit(url)
+    time.sleep(1)
+    html = browser.html
+    soup = bs(html, "html.parser")
+
+    hem_image = []
+
+    products = soup.find("div", class_="result-list")
+    links = soup.find_all('div', class_='item')
+
+    for planet in links:
+    # find title in landing page under div-item-a-href-h3
+        title = planet.find("h3").text
+    # find link in same div-item-a-href area
+        link_end = planet.find("a")["href"]
+    # add initial web page begining to link end
+        image_link = "https://astrogeology.usgs.gov/" + link_end
+    # visit browser page using the link
+        browser.visit(image_link)
+    # html object
+        html = browser.html
+    # Create BeautifulSoup object; parse with "html.parser"
+        soup=bs(html, "html.parser")
+    # Retreive all elements that contain planets' title and url
+        download= soup.find("div", class_="downloads")
+        image_url = download.find("a")["href"]
+        hem_image.append({"title":title, "img_url": image_url})
 
 
-#     for i in links:
-#         hemisphere = {}
-    
-# #     hemisphere = hemi.find('div', class_="description")
-# #     title = hemisphere.h3.text
-# #     title = title.strip('Enhanced')
-    
-#         browser.find_by_css("a.product-item h3")[i].click()
-    
-#         sample_elem = browser.links.find_by_text('Sample').first
-#         hemisphere['img_url'] = sample_elem['href']
-    
-#         hemisphere['title'] = browser.find_by_css('h2.title').text
-    
-#         hemisphere_imgage_urls.append(hemisphere)
-    
-#         browser.back()
+
     browser.quit()
 
     # Create dictionary for all info scraped from sources above
@@ -108,7 +115,7 @@ def scrape():
         "news_title":news_title,
         'news_p':news_p,
         "fact_table":fact_table,
-#        "mars_images":hemisphere_imgage_urls
+        "mars_images":hem_image
     }
 
     return mars_data
