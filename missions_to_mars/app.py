@@ -5,14 +5,7 @@ from flask_pymongo import PyMongo
 
 #missions_to_mars\scrape_mars.py
 # Imports and dependencies
-from bs4 import BeautifulSoup as bs
-import requests
-import os
-from splinter import Browser
-import pymongo
-from webdriver_manager.chrome import ChromeDriverManager
-import pandas as pd
-from datetime import datetime
+
 
 app = Flask(__name__)
 # Use flask_pymongo to set up mongo connection
@@ -33,7 +26,6 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_db")
 @app.route("/")
 def index():
     mars = mongo.db.collection.find_one()
-
     return render_template("index.html", mars=mars)
 
 
@@ -43,7 +35,7 @@ def scrape_all():
 
     mars_data = scrape_mars.scrape()
     mongo.db.collection.update({}, mars_data, upsert=True)
-#    mars.update({}, mars_data, upsert=True)
+#    mongo.update({}, mars_data, upsert=True)
     return redirect('/', code=302)
 
 if __name__ == "__main__":

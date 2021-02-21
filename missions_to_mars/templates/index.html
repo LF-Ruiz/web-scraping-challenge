@@ -65,23 +65,24 @@
         </div>
     </div>
     <!-- Mars Hemispheres Images-->
-    <div class="row" id="mars-images">
-        <div class="page-header">
-            <h2 class="text-center">Mars Hemispheres</h2>
+        <div class="row" id="mars-images">
+            <div class="page-header">
+                <h2 class="text-center">Mars Hemispheres</h2>
+            </div>
         </div>
-    </div>
     <!-- hemispheres -->
-    <div class="row">
-        {% for hemisphere in mars_images %}
+        <div class="row">
+            {% for hemisphere in mars_images %}
             <div class="col-md-6">
                 <div >
                     <img style="width:100%" src="{{hemisphere.img_url}}">
                     <h3> {{hemisphere.title}} </h3>
                 </div>
             </div>
-        {% endfor %}
-    </div>    
+            {% endfor %}
+        </div>    
 
+    <p> This is mars</p>
 </body>
 
 </html>

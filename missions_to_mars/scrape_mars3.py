@@ -76,7 +76,9 @@ def scrape():
 
     # URL to be scraped
     url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-
+    # Setup splinter
+    executable_path = {'executable_path': ChromeDriverManager().install()}
+    browser = Browser('chrome', **executable_path, headless=False)
     # visit the astrogeology website
     browser.visit(url)
     time.sleep(1)
@@ -119,3 +121,4 @@ def scrape():
     }
 
     return mars_data
+    print(mars_data)
