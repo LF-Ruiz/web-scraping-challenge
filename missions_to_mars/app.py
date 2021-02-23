@@ -26,7 +26,7 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_db")
 @app.route("/")
 def index():
     mars = mongo.db.collection.find_one()
-    return render_template("index.html", mars=mars)
+    return render_template("index.html", mars=mars, images=mars['mars_images'])
 
 
 
