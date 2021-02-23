@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for
 from pymongo import MongoClient
-import scrape_mars3 as scrape_mars
+import scrape_mars as scrape_mars
 from flask_pymongo import PyMongo
 
 #missions_to_mars\scrape_mars.py
